@@ -1,5 +1,3 @@
-# Computational-Intelligence
-
 # Genetic Algorithm: Selection Methods & Crossovers
 
 ## Overview
