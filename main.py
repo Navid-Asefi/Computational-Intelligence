@@ -1,7 +1,7 @@
 import os
 from selection import Selection
-from generations import ChromosomeGen
-from probability import Prob
+from tools.generations import ChromosomeGen
+from tools.probability import Prob
 
 
 select = Selection()

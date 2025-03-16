@@ -1,5 +1,5 @@
 import random
-from probability import Prob
+from tools.probability import Prob
 
 class Selection:
     def __init__(self) -> None:
