@@ -48,8 +48,10 @@ elif selection_method == "4":
 elif selection_method == "5": 
     selection_ratio=float(input("Enter top percentage population that you want: "))
     os.system('cls' if os.name == 'nt' else 'clear')
+    all_chromosomes = ChromosomeGen(chromosomes_count).gene_generator()
     size_of_group = int(input("How many chromosomes should the group have: "))
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(f"The selected chromosomes:\n{select.truncation_selection(ChromosomeGen(chromosomes_count).gene_generator(), selection_ratio, size_of_group)}")
+    print(f"All of the chromosomes:\n{all_chromosomes}")
+    print(f"\nThe selected chromosomes:\n{select.truncation_selection(all_chromosomes, selection_ratio, size_of_group)}")
 
 
