@@ -1,6 +1,6 @@
 import random
 
-class chromosomeGen:
+class ChromosomeGen:
 
     def __init__(self, generations):
         self.community = []
