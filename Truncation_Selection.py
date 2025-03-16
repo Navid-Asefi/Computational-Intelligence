@@ -21,7 +21,7 @@ def truncation_selection(population, selection_ratio,size_of_group):
 user_input = int(input("How many chromosomes do you want to be generated: "))
 selection_ratio=float(input("enter top percentage population that you want: "))
 size_of_group = int(input("How many chromosomes should the group have: "))
-gen = chromosomeGen(user_input)
+gen = ChromosomeGen(user_input)
 pr = Prob(gen.gene_generator())
 
 print(gen)
