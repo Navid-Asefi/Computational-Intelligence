@@ -14,7 +14,7 @@ def recombination():
             raise ValueError
         
         num = int(input("Number of genes you desire to change into the parents' convexed linear combination: "))
-        if num > 10:
+        if num > 10 or num < 0:
             raise ValueError
         
         for j in range(0, 10-num):
