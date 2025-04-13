@@ -71,3 +71,14 @@ class Crossovers:
             round(alpha * a + (1 - alpha) * b, 2) for a, b in zip(parent2, parent1)
         ]
         return child, child2
+
+    @staticmethod
+    def uniform_crossover(parent1, parent2, crossover_prob=0.5):
+        offspring1 = parent1[:]
+        offspring2 = parent2[:]
+
+        for i in range(len(parent1)):
+            if random.random() < crossover_prob:
+                offspring1[i], offspring2[i] = offspring2[i], offspring1[i]
+
+        return offspring1, offspring2

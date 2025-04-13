@@ -49,9 +49,10 @@ def main():
     crossover_methods = {
         "1": ("One Point Crossover", "one_point"),
         "2": ("Two Point Crossover", "two_point"),
-        "3": ("Simple Crossover", "simple"),
-        "4": ("Simple Arithmetic Crossover", "simple_arithmetic"),
-        "5": ("Whole Arithmetic Crossover", "whole_crossover"),
+        "3": ("Uniform Crossover", "uniform_crossover"),
+        "4": ("Simple Crossover", "simple"),
+        "5": ("Simple Arithmetic Crossover", "simple_arithmetic"),
+        "6": ("Whole Arithmetic Crossover", "whole_crossover"),
     }
 
     binary_crossovers = {}
