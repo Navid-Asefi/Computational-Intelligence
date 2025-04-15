@@ -53,9 +53,12 @@ def main():
         "4": ("Simple Crossover", "simple"),
         "5": ("Simple Arithmetic Crossover", "simple_arithmetic"),
         "6": ("Whole Arithmetic Crossover", "whole_crossover"),
+        "7": ("Order Recombination Crossover", "Order_Recombination"),
+        "8": ("Cycle Recombination Crossover", "Cycle_Recombination"),
     }
 
     binary_crossovers = {}
+    permute_crossovers = {"Order_Recombination", "Cycle_Recombination"}
 
     clear()
     selection_choice = choose_method(selection_methods, "selection")
@@ -66,11 +69,12 @@ def main():
     crossover_func_name = crossover_methods[crossover_choice][1]
     crossover_func = getattr(crossover, crossover_func_name)
     needs_binary = crossover_func_name in binary_crossovers
+    needs_permute = crossover_func_name in permute_crossovers
 
     chromosomes_count = get_int("How many chromosomes should your population have? ")
     clear()
 
-    chromo_gen = ChromosomeGen(chromosomes_count, needs_binary)
+    chromo_gen = ChromosomeGen(chromosomes_count, needs_binary, needs_permute)
     population = chromo_gen.gene_generator()
     selected = []
 
