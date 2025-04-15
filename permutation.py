@@ -6,6 +6,19 @@ parents = chromosomes.gene_generator()
 
 def Order_Recombination(parents):
 
+    def fill(indx, b, child1, child2, parents):
+        
+        for j in range(indx):
+            for i in range(10):
+                if not parents[1][(b+i)%10] in child1:
+                    child1[(b+j)%10] = parents[1][(b+i)%10]
+                    break
+                
+            for i in range(10):
+                if not parents[0][(b+i)%10] in child2:
+                    child2[(b+j)%10] = parents[0][(b+i)%10]
+                    break
+
     a = random.randint(0, 9)
     b = random.randint(0, 9)
 
@@ -30,21 +43,6 @@ def Order_Recombination(parents):
         indx = child1.count("x")
         fill(indx, a, child1, child2, parents)
 
-
-    return child1, child2, a, b, indx
-
-
-def fill(indx, b, child1, child2, parents):
-
-    for j in range(indx):
-        print(child1)
-        for i in range(10):
-            if not parents[1][(b+i)%10] in child1:
-                child1[(b+j)%10] = parents[1][(b+i)%10]
-
-            if not parents[0][(b+i)%10] in child2:
-                child2[(b+j)%10] = parents[0][(b+i)%10]
-
-            continue
+    return child1, child2, a, b
 
 print(parents, Order_Recombination(parents))
