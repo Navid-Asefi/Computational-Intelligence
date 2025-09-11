@@ -1,22 +1,13 @@
 import random
 from tools.generations import ChromosomeGen
 
-chromosomes = ChromosomeGen(1)
+chromosomes = ChromosomeGen(1,permute=True)
 parents = chromosomes.gene_generator()
 parent=parents[0]
 
 def swap_mutation(parent):
-    """
-    Args:
-        chromosome (list): The parent chromosome to be mutated.
-        mutation_rate (float): The probability of mutation (e.g., 0.05 for 5%).
 
-    Returns:
-        list: The mutated offspring chromosome.
-    """
-    # Create a copy to avoid modifying the original
     offspring = parent.copy()
-    
     length = 10
         
     # Randomly select two distinct indices
@@ -27,8 +18,6 @@ def swap_mutation(parent):
              
     # Swap the values at the selected indices
     offspring[idx1], offspring[idx2] = offspring[idx2], offspring[idx1]
-
-        
     
     return offspring
 
