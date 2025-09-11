@@ -86,11 +86,12 @@ def main():
     elif selection_choice == "2":
         prob = Prob(population)
         prob.fitness()
-        selected = [select.roulette_wheel(population, prob.cumul())]
+        prob.prob()
+        selected = select.roulette_wheel(population, prob.cumul())
 
     elif selection_choice == "3":
         fitnesses = Prob(population).fitness()
-        selected = [select.rank_selection(population, fitnesses)]
+        selected = select.rank_selection(population, fitnesses)
 
     elif selection_choice == "4":
         group_size = get_int("Group size for tournament: ")
@@ -115,6 +116,9 @@ def main():
 
     # Crossover Phase
     crossover_func = getattr(crossover, crossover_methods[crossover_choice][1])
+
+    alpha = None
+    num = None
 
     offspring = []
     if crossover_func_name == "simple":
