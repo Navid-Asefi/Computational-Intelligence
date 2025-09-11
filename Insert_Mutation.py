@@ -19,7 +19,6 @@ def insert_mutation(parent):
     # Insert it at the target position
     offspring.insert(to_idx, gene)
     
-    print(f"Moved gene from index {from_idx} to index {to_idx}")
     return offspring
 
 offspring = insert_mutation(parent)
