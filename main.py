@@ -2,6 +2,7 @@ import os
 import sys
 
 from crossovers import Crossovers
+from mutation import Mutations
 from selection import Selection
 from tools.generations import ChromosomeGen
 from tools.probability import Prob
@@ -57,8 +58,22 @@ def main():
         "8": ("Cycle Recombination Crossover", "Cycle_Recombination"),
     }
 
+    mutation_methods = {
+        "1": ("Bit Flip", "bit_flip"),  # Binary only
+        "2": ("Swap Mutation", "swap_mutation"),  # Permutation only
+        "3": ("Scramble Mutation", "scramble_mutation"),  # Permutation only
+        "4": ("Inversion Mutation", "inversion_mutation"),  # Permutation only
+        "5": ("Insert Mutation", "insert_mutation"),  # Permutation only
+    }
+
     binary_crossovers = {}
     permute_crossovers = {"Order_Recombination", "Cycle_Recombination"}
+    needs_permute_mut = {
+        "swap_mutation",
+        "scramble_mutation",
+        "inversion_mutation",
+        "insert_mutation",
+    }
 
     clear()
     selection_choice = choose_method(selection_methods, "selection")
@@ -73,6 +88,26 @@ def main():
 
     chromosomes_count = get_int("How many chromosomes should your population have? ")
     clear()
+
+    for key, (name, _) in mutation_methods.items():
+        print(f"{key}. {name}")
+
+    mutation_choice = input(
+        "Enter number for mutation (leave empty for none): "
+    ).strip()
+
+    mutation_func = None
+
+    if mutation_choice in mutation_methods:
+        func_name = mutation_methods[mutation_choice][1]
+
+        # Check compatibility
+        if func_name == "bit_flip" and not needs_binary:
+            print("Bit Flip mutation requires binary chromosomes. Skipping mutation.")
+        elif func_name in needs_permute_mut and not needs_permute:
+            print(f"{func_name} requires permutation chromosomes. Skipping mutation.")
+        else:
+            mutation_func = getattr(Mutations, func_name)
 
     chromo_gen = ChromosomeGen(chromosomes_count, needs_binary, needs_permute)
     population = chromo_gen.gene_generator()
@@ -157,6 +192,14 @@ def main():
             child = crossover_func(parent1, parent2)
             offspring.append(child)
     print("\nOffspring after crossover:")
+    for i, child in enumerate(offspring):
+        print(f"{i + 1}: {child}")
+
+    if mutation_func is not None:
+        for i in range(len(offspring)):
+            offspring[i] = mutation_func(offspring[i])
+
+    print("\nOffspring after mutation:")
     for i, child in enumerate(offspring):
         print(f"{i + 1}: {child}")
 
