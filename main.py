@@ -64,6 +64,7 @@ def main():
         "3": ("Scramble Mutation", "scramble_mutation"),  # Permutation only
         "4": ("Inversion Mutation", "inversion_mutation"),  # Permutation only
         "5": ("Insert Mutation", "insert_mutation"),  # Permutation only
+        "6": ("Complement Mutation", "complement_mutation"),
     }
 
     binary_crossovers = {}
@@ -197,7 +198,10 @@ def main():
 
     if mutation_func is not None:
         for i in range(len(offspring)):
-            offspring[i] = mutation_func(offspring[i])
+            child = (
+                list(offspring[i]) if isinstance(offspring[i], tuple) else offspring[i]
+            )
+            offspring[i] = mutation_func(child)
 
     print("\nOffspring after mutation:")
     for i, child in enumerate(offspring):
