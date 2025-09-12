@@ -82,3 +82,62 @@ class Crossovers:
                 offspring1[i], offspring2[i] = offspring2[i], offspring1[i]
 
         return offspring1, offspring2
+
+    @staticmethod
+    def Order_Recombination(parent1, parent2):
+        size = len(parent1)
+
+        a, b = sorted(random.sample(range(size), 2))
+
+        child1 = ["x"] * size
+        child2 = ["x"] * size
+
+        child1[a:b] = parent1[a:b]
+        child2[a:b] = parent2[a:b]
+
+        def fill(child, donor, start, end):
+            idx = end
+            for gene in donor[end:] + donor[:end]:
+                if gene not in child:
+                    if idx >= size:
+                        idx = 0
+                    child[idx] = gene
+                    idx += 1
+
+        fill(child1, parent2, a, b)
+        fill(child2, parent1, a, b)
+
+        return child1, child2, a, b
+
+    @staticmethod
+    def Cycle_Recombination(parent1, parent2):
+        def cx(p1, p2):
+            child = [None] * len(p1)
+            index = 0
+            copy_from_p1 = True
+
+            while None in child:
+                if child[index] is not None:
+                    index = child.index(None)
+                    copy_from_p1 = not copy_from_p1
+                    continue
+
+                cycle_start = index
+                current_index = index
+
+                while True:
+                    child[current_index] = (
+                        p1[current_index] if copy_from_p1 else p2[current_index]
+                    )
+                    value_in_p1 = p1[current_index]
+                    current_index = p2.index(value_in_p1)
+                    if current_index == cycle_start:
+                        break
+
+                index = current_index + 1 if None in child else index
+
+            return child
+
+        child1 = cx(parent1, parent2)
+        child2 = cx(parent2, parent1)
+        return child1, child2
