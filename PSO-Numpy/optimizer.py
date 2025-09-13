@@ -1,7 +1,7 @@
 import numpy as np
 from particle import Particle
 
-def pso_numpy(objective_function, dimension, bounds, population=50, iterations=4000,
+def pso_numpy(objective_function, dimension, bounds, population=50, iterations=40,
               w=0.74, c1=1.42, c2=1.42):
     
     swarm = Particle.swarms(dimension, bounds, population)
