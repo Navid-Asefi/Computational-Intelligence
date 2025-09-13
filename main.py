@@ -192,6 +192,7 @@ def main():
         else:
             child = crossover_func(parent1, parent2)
             offspring.append(child)
+
     print("\nOffspring after crossover:")
     for i, child in enumerate(offspring):
         print(f"{i + 1}: {child}")
