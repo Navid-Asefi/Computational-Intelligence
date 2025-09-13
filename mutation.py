@@ -83,8 +83,10 @@ class Mutations:
         """Insert mutation for permutation chromosomes"""
         child = parent.copy()
         from_idx, to_idx = random.sample(range(len(parent[0])), 2)
-        gene = child.pop(from_idx)
-        child.insert(to_idx, gene)
+        gene = child[0].pop(from_idx)
+        gene1 = child[1].pop(from_idx)
+        child[0].insert(to_idx, gene)
+        child[1].insert(to_idx, gene1)
         return child
 
     @staticmethod
