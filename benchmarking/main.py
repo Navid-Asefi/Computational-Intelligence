@@ -5,12 +5,12 @@ from benchmark import Benchmark
 
 
 def run_single(name, pop_size=50):
-    """Run a single benchmark on its own dimensionality and return fitness stats"""
+    """Run a single benchmark and return fitness stats"""
     benchmark = Benchmark(name)
     dims = benchmark.get_dims()
     lb, ub = benchmark.get_bounds()
 
-    # Generate population in the correct dimension
+    # Initialize population with exactly the required dimension
     population = [
         [random.uniform(lb, ub) for _ in range(dims)] for _ in range(pop_size)
     ]
@@ -18,7 +18,7 @@ def run_single(name, pop_size=50):
     fitness = []
     for ind in population:
         val = benchmark.evaluate(ind)
-        # Ensure scalar value
+        # Handle numpy return values
         if isinstance(val, np.ndarray):
             val = val.item() if val.size == 1 else float(val.sum())
         fitness.append(val)
@@ -40,8 +40,12 @@ def main():
     if choice.lower() in {"all", str(len(available) + 1)}:
         results = []
         for name in available:
-            mean_fit, std_fit = run_single(name)
-            results.append((name, mean_fit, std_fit))
+            try:
+                mean_fit, std_fit = run_single(name)
+                results.append((name, mean_fit, std_fit))
+            except Exception as e:
+                # Catch functions that fail (like wrong dimension) and skip them
+                print(f"Skipping {name}: {e}")
 
         # Rank by mean fitness (lower is better)
         results.sort(key=lambda x: x[1])
