@@ -1,5 +1,7 @@
 import numpy as np
 from optimizer import pso_numpy
+import markdown
+from weasyprint import HTML
 
 # ------------------- Benchmark Functions ------------------- #
 
@@ -314,6 +316,68 @@ def create_results_table(results):
 
     print("="*80)
 
+def generate_markdown_table(results, output_file="benchmark_results.md"):
+    sorted_results = sorted(results.items(), key=lambda x: x[1]["min"])
+
+    lines = []
+    lines.append("| Benchmark Function              | Best             | Mean             | Std              | Rank |")
+    lines.append("|--------------------------------|------------------|------------------|------------------|------|")
+
+    for rank, (name, stats) in enumerate(sorted_results, 1):
+        if np.isnan(stats["min"]):
+            lines.append(f"| {name:<30} | N/A              | N/A              | N/A              | {rank:>4} |")
+        else:
+            lines.append(
+                f"| {name:<30} | {stats['min']:.6e} | {stats['mean']:.6e} | {stats['std']:.6e} | {rank:>4} |"
+            )
+
+    with open(output_file, "w") as f:
+        f.write("# PSO Benchmark Results\n\n")
+        f.write("\n".join(lines))
+
+    print(f"Markdown results saved to {output_file}")
+
+
+def convert_markdown_to_pdf(md_file="benchmark_results.md", pdf_file="benchmark_results.pdf"):
+    with open(md_file, "r") as f:
+        md_content = f.read()
+
+    html_content = markdown.markdown(md_content, extensions=["tables"])
+
+    # Add CSS for better table formatting
+    style = """
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 6px 10px;
+            text-align: left;
+            font-size: 11px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+    </style>
+    """
+
+    html_full = f"<!DOCTYPE html><html><head>{style}</head><body>{html_content}</body></html>"
+
+    HTML(string=html_full).write_pdf(pdf_file)
+    print(f"PDF saved to {pdf_file}")
+
+
+
 # ------------------- Main Execution ------------------- #
 
 if __name__ == "__main__":
@@ -322,6 +386,12 @@ if __name__ == "__main__":
 
     # Create and display the results table
     create_results_table(results)
+
+    # Generate markdown table
+    generate_markdown_table(results)
+
+    # Optional: Convert to PDF
+    convert_markdown_to_pdf()
 
     # Save results to a file
     np.save("benchmark_results.npy", results)
