@@ -1,16 +1,24 @@
 import numpy as np
 from particle import Particle
 
-def pso_numpy(objective_function, dimension, bounds, population=50, iterations=40,
-              w=0.74, c1=1.42, c2=1.42):
-    
+
+def pso_numpy(
+    objective_function,
+    dimension,
+    bounds,
+    population=50,
+    iterations=40000,
+    w=0.74,
+    c1=1.42,
+    c2=1.42,
+):
     swarm = Particle.swarms(dimension, bounds, population)
-    
+
     # Convert positions and bests to arrays for vector operations
     positions = np.array([p.position for p in swarm])
     velocities = np.array([p.velocity for p in swarm])
     personal_bests = positions.copy()
-    
+
     # Initial global best
     fitness = np.array([objective_function(pos) for pos in positions])
     best_idx = np.argmin(fitness)
@@ -22,9 +30,11 @@ def pso_numpy(objective_function, dimension, bounds, population=50, iterations=4
         r2 = np.random.rand(population, dimension)
 
         # Update velocity
-        velocities = (w * velocities +
-                      c1 * r1 * (personal_bests - positions) +
-                      c2 * r2 * (global_best - positions))
+        velocities = (
+            w * velocities
+            + c1 * r1 * (personal_bests - positions)
+            + c2 * r2 * (global_best - positions)
+        )
 
         # Update position
         positions += velocities
